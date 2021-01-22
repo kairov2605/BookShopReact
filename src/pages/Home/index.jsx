@@ -6,11 +6,23 @@ import './Home.scss';
 
 import { connect } from 'react-redux';
 
-function Home({ books }) {
+function Home({ books, cart }) {
+  const [cartCount, setCartCount] = useState(0);
+
+  useEffect(() => {
+    let count = 0;
+    cart &&
+      cart.forEach((item) => {
+        count += item.qty;
+      });
+
+    setCartCount(count);
+  }, [cart, cartCount]);
+
   return (
     <div className="both">
       <Link to="/cart">
-        <Button className="cart-button">Корзина</Button>
+        <Button className="cart-button">Корзина {cartCount}</Button>
       </Link>
       <div className="home">
         {books.map((book) => (
@@ -26,6 +38,7 @@ function Home({ books }) {
 const mapStateToProps = (state) => {
   return {
     books: state.book.books,
+    cart: state.book.cart,
   };
 };
 

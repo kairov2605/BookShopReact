@@ -1,40 +1,51 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import CartItem from './CartItem';
 
-function Cart() {
+import './Cart.scss';
+import { connect } from 'react-redux';
+
+function Cart({ cart }) {
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [totalItems, setTotalItems] = useState(0);
+
+  useEffect(() => {
+    let items = 0;
+    let price = 0;
+
+    cart.forEach((item) => {
+      items += item.qty;
+      price += item.qty * item.price;
+    });
+
+    setTotalItems(items);
+    setTotalPrice(price);
+  }, [cart, totalPrice, totalItems, setTotalPrice, setTotalItems]);
+
   return (
-    <div>
-      <table class="table">
-        <thead class="thead-dark">
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">First</th>
-            <th scope="col">Last</th>
-            <th scope="col">Handle</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td>Larry</td>
-            <td>the Bird</td>
-            <td>@twitter</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <>
+      <div className="cartHead">
+        <h4 className="cartHead__title">Название книги</h4>
+        <h4 className="cartHead__quantity">Количество</h4>
+        <div className="cartHead__price">Цена</div>
+      </div>
+      <div className="cart">
+        {cart.map((item) => (
+          <CartItem key={item.id} item={item} />
+        ))}
+
+        <div className="cart__info">
+          <h2>Количество книг : {totalPrice}</h2>
+          <h2>Сумма : {totalItems}</h2>
+        </div>
+      </div>
+    </>
   );
 }
 
-export default Cart;
+const mapStateToProps = (state) => {
+  return {
+    cart: state.book.cart,
+  };
+};
+
+export default connect(mapStateToProps)(Cart);

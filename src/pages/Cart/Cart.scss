@@ -1,0 +1,31 @@
+.cartHead {
+  margin-top: 20px;
+  text-align: center;
+  display: flex;
+  width: 950px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+  border-radius: 10px;
+
+  &__title {
+    height: 100px;
+    padding-top: 25px;
+    width: 400px;
+
+    text-align: center;
+  }
+  &__quantity {
+    height: 100px;
+    padding-top: 35px;
+    width: 200px;
+
+    text-align: center;
+  }
+  &__price {
+    height: 100px;
+    line-height: 100px;
+    width: 180px;
+    font-weight: bold;
+    font-size: 24px;
+    text-align: center;
+  }
+}

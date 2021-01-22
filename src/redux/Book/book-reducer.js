@@ -4,66 +4,57 @@ const INITIAL_STATE = {
   books: [
     {
       id: 0,
-      imageUrl:
-        'https://images.unsplash.com/photo-1591991731833-b4807cf7ef94?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
-      name: 'Пепперони Фреш с перцем',
-      price: 803,
+      imageUrl: 'https://source.unsplash.com/random',
+      name: 'Анна Каренина',
+      price: 1100,
     },
     {
-      id: 0,
-      imageUrl:
-        'https://images.unsplash.com/photo-1591991731833-b4807cf7ef94?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
-      name: 'Пепперони Фреш с перцем',
-      price: 803,
+      id: 1,
+      imageUrl: 'https://source.unsplash.com/random',
+      name: 'Автостопом по галактике',
+      price: 8000,
     },
     {
-      id: 0,
-      imageUrl:
-        'https://images.unsplash.com/photo-1591991731833-b4807cf7ef94?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
-      name: 'Пепперони Фреш с перцем',
-      price: 803,
+      id: 2,
+      imageUrl: 'https://source.unsplash.com/random',
+      name: 'Алиса в Стране чудес',
+      price: 700,
     },
     {
-      id: 0,
-      imageUrl:
-        'https://images.unsplash.com/photo-1591991731833-b4807cf7ef94?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
-      name: 'Пепперони Фреш с перцем',
-      price: 803,
+      id: 3,
+      imageUrl: 'https://source.unsplash.com/random',
+      name: 'Алхимик',
+      price: 2500,
     },
     {
-      id: 0,
-      imageUrl:
-        'https://images.unsplash.com/photo-1591991731833-b4807cf7ef94?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
-      name: 'Пепперони Фреш с перцем',
-      price: 803,
+      id: 4,
+      imageUrl: 'https://source.unsplash.com/random',
+      name: 'Американский психопат',
+      price: 4990,
     },
     {
-      id: 0,
-      imageUrl:
-        'https://images.unsplash.com/photo-1591991731833-b4807cf7ef94?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
-      name: 'Пепперони Фреш с перцем',
-      price: 803,
+      id: 5,
+      imageUrl: 'https://source.unsplash.com/random',
+      name: 'Аня из Зеленых Мезонинов',
+      price: 5700,
     },
     {
-      id: 0,
-      imageUrl:
-        'https://images.unsplash.com/photo-1591991731833-b4807cf7ef94?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
-      name: 'Пепперони Фреш с перцем',
-      price: 803,
+      id: 6,
+      imageUrl: 'https://source.unsplash.com/random',
+      name: 'Ангус, ремни и конкретные обжимашки',
+      price: 1250,
     },
     {
-      id: 0,
-      imageUrl:
-        'https://images.unsplash.com/photo-1591991731833-b4807cf7ef94?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
-      name: 'Пепперони Фреш с перцем',
-      price: 803,
+      id: 7,
+      imageUrl: 'https://source.unsplash.com/random',
+      name: 'Артемис Фаул',
+      price: 4356,
     },
     {
-      id: 0,
-      imageUrl:
-        'https://images.unsplash.com/photo-1591991731833-b4807cf7ef94?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
-      name: 'Пепперони Фреш с перцем',
-      price: 803,
+      id: 8,
+      imageUrl: 'https://source.unsplash.com/random',
+      name: 'БДВ, или Большой и добрый великан',
+      price: 789,
     },
   ],
   cart: [],
@@ -73,13 +64,34 @@ const INITIAL_STATE = {
 const bookReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case actionTypes.ADD_TO_CART:
-      return {};
+      const item = state.books.find((book) => book.id === action.payload.id);
+
+      const inCart = state.cart.find((item) => (item.id === action.payload.id ? true : false));
+      return {
+        ...state,
+        cart: inCart
+          ? state.cart.map((item) =>
+              item.id === action.payload.id ? { ...item, qty: item.qty + 1 } : item,
+            )
+          : [...state.cart, { ...item, qty: 1 }],
+      };
     case actionTypes.REMOVE_FROM_CART:
-      return {};
+      return {
+        ...state,
+        cart: state.cart.filter((item) => item.id !== action.payload.id),
+      };
     case actionTypes.ADJUST_QTY:
-      return {};
+      return {
+        ...state,
+        cart: state.cart.map((item) =>
+          item.id === action.payload.id ? { ...item, qty: action.payload.qty } : item,
+        ),
+      };
     case actionTypes.LOAD_CURRENT_ITEM:
-      return {};
+      return {
+        ...state,
+        currentItem: action.payload,
+      };
     default:
       return state;
   }
